@@ -2,7 +2,7 @@ import axios from 'axios'
 import cheerio from 'cheerio'
 import neatCsv from 'neat-csv'
 import { getBenchmarkModel, getRank } from './helpers'
-import { outputJson } from 'fs-extra'
+import { readJson, outputJson } from 'fs-extra'
 import path from 'path'
 
 export default async function (req, res) {
@@ -11,9 +11,7 @@ export default async function (req, res) {
 
     const date = new Date('01 ' + $('#main_stats_header').text().split(' ').slice(0, 2).join(' '))
     const configDate = `${date.getFullYear()}/${date.getMonth() + 1}`
-
-    const configRequest = await axios.get(`${process.env.SITE_URL}data/config.json?v=${new Date().getTime()}`)
-    const config = configRequest.data
+    const config = await readJson(dataPath + '/config.json')
 
     if (configDate !== config.latest) {
         const userBenchmarkResponse = await axios.get('https://www.userbenchmark.com/resources/download/csv/GPU_UserBenchmarks.csv')
@@ -44,7 +42,7 @@ export default async function (req, res) {
         result.total = result.stats.map(gpu => gpu.percentage).reduce((a, b) => a + b).toFixed(2)
         result.stats.forEach((gpu, index) => gpu.rank = index + 1)
 
-        const dataPath = path.join(__dirname, '..', 'static', 'data')
+        const dataPath = path.join(__dirname, '..', '..', 'data')
         
         config.latest = configDate
         await Promise.all([
@@ -53,16 +51,4 @@ export default async function (req, res) {
     }
 
     res.end('OK')
-    
-
-    // const notFound = gpus.filter(gpu => !getRank(getBenchmarkModel(gpu.name), benchmarkData))
-
-    // res.end(
-    //     JSON.stringify(
-    //         gpus.map(gpu => ({
-    //             ...gpu,
-    //             rank: getRank(getBenchmarkModel(gpu.name), benchmarkData)
-    //         }))))
-    // res.end(JSON.stringify(notFound))
-    // res.end(JSON.stringify(benchmarkData))
 }

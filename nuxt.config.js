@@ -12,7 +12,8 @@ export default {
     modules: ['nuxt-buefy'],
     buildModules: ['@nuxtjs/dotenv'],
     serverMiddleware: [
-        { path: '/generate', handler: '~/data-generation/generate.js' }
+        { path: '/api/generate', handler: '~/api/generate.js' },
+        { path: '/api/get', handler: '~/api/get.js' }
     ],
     router: {
         base: process.env.SITE_ROOT
