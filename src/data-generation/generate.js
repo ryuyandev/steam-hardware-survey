@@ -2,7 +2,6 @@ import axios from 'axios'
 import cheerio from 'cheerio'
 import neatCsv from 'neat-csv'
 import { getBenchmarkModel, getRank } from './helpers'
-import config from '../../data/config.json'
 import { outputJson } from 'fs-extra'
 import path from 'path'
 
@@ -12,6 +11,9 @@ export default async function (req, res) {
 
     const date = new Date('01 ' + $('#main_stats_header').text().split(' ').slice(0, 2).join(' '))
     const configDate = `${date.getFullYear()}/${date.getMonth() + 1}`
+
+    const configRequest = await axios.get(`${process.env.SITE_URL}data/config.json?v=${new Date().getTime()}`)
+    const config = configRequest.data
 
     if (configDate !== config.latest) {
         const userBenchmarkResponse = await axios.get('https://www.userbenchmark.com/resources/download/csv/GPU_UserBenchmarks.csv')
