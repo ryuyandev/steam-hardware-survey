@@ -9,7 +9,6 @@ RUN npm ci
 
 COPY src ./src
 COPY nuxt.config.js ./
-COPY data ./data
 
 EXPOSE 3000
 
