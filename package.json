@@ -1,0 +1,26 @@
+{
+  "name": "steam-hardware-survey",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
+    "fs-extra": "^9.0.1",
+    "neat-csv": "^5.2.0",
+    "nuxt": "^2.13.3",
+    "nuxt-buefy": "^0.3.31"
+  },
+  "devDependencies": {
+    "node-sass": "^4.14.1",
+    "sass-loader": "^9.0.2"
+  }
+}
