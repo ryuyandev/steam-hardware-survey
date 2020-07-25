@@ -35,7 +35,7 @@ export default async function (req, res) {
         const gtx1060rank = gpus.filter(gpu => gpu.name == 'NVIDIA GeForce GTX 1060')[0].benchmarkRank
     
         const result = {
-            date: date.toJSON(),
+            date: date.toJSON().split('.')[0],
             stats: gpus
                 .filter(gpu => gpu.benchmarkRank >= gtx1060rank)
                 .sort((a, b) => a.benchmarkRank > b.benchmarkRank ? 1 : -1)
