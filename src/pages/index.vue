@@ -1,5 +1,5 @@
 <template>
-    <div id="app" v-if="data">
+    <div id="app" v-if="data" :style="{ background: appBackground }">
         <header class="hero is-primary">
             <div class="hero-body">
                 <div class="container">
@@ -57,7 +57,7 @@
             </div>
         </footer>
     </div>
-    <div id="app" class="no-data" v-else>
+    <div id="app" class="no-data" v-else :style="{ background: appBackground }">
         No Available Data
     </div>
 </template>
@@ -68,6 +68,9 @@ import { mapState } from 'vuex'
 export default {
     computed: {
         ...mapState(['data', 'olderUrl']),
+        appBackground() {
+            return `url('${process.env.SITE_ROOT}default-bg.png') center top no-repeat #1b2838;`
+        },
         date() {
             const date = new Date(this.data.date)
             return `${date.toLocaleDateString('default', { month: 'long' })} ${date.getFullYear()}`
@@ -81,7 +84,6 @@ export default {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: url('/default-bg.png') center top no-repeat #1b2838;
 
     &.no-data {
         justify-content: center;

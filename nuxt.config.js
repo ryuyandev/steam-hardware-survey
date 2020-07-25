@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 export default {
     srcDir: 'src/',
     mode: 'universal',
@@ -11,5 +13,8 @@ export default {
     buildModules: ['@nuxtjs/dotenv'],
     serverMiddleware: [
         { path: '/generate', handler: '~/data-generation/generate.js' }
-    ]
+    ],
+    router: {
+        base: process.env.SITE_ROOT
+    }
 }
