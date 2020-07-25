@@ -1,3 +1,5 @@
+import config from '../../data/config'
+
 export const state = () => ({
     data: null,
     olderUrl: ''
@@ -8,8 +10,9 @@ export const actions = {
         let data = null
 
         if (req.url === '/') {
-            const config = require('../../data/config')
-            data = require(`../../data/${config.latest}`)
+            try {
+                data = require(`../../data/${config.latest}`)
+            } catch (e) {}
         } else {
             const pieces = req.url.split('/')
 

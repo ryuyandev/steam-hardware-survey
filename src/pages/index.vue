@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" v-if="data">
         <header class="hero is-primary">
             <div class="hero-body">
                 <div class="container">
@@ -57,6 +57,9 @@
             </div>
         </footer>
     </div>
+    <div id="app" class="no-data" v-else>
+        No Available Data
+    </div>
 </template>
 
 <script>
@@ -79,6 +82,13 @@ export default {
     display: flex;
     flex-direction: column;
     background: url('/default-bg.png') center top no-repeat #1b2838;
+
+    .no-data {
+        justify-content: center;
+        text-align: center;
+        color: #FFF;
+        font-size: 64px;
+    }
 
     a {
         color: #C6D4DF;
