@@ -9,7 +9,7 @@ export const actions = {
     nuxtServerInit({ commit }, { req, redirect }) {
         let data = null
 
-        if (req.url === '/') {
+        if (req.url === '/' || req.url === '') {
             try {
                 data = require(`../../data/${config.latest}`)
             } catch (e) {}

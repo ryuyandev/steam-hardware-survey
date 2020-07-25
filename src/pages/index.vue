@@ -83,7 +83,7 @@ export default {
     flex-direction: column;
     background: url('/default-bg.png') center top no-repeat #1b2838;
 
-    .no-data {
+    &.no-data {
         justify-content: center;
         text-align: center;
         color: #FFF;
