@@ -15,9 +15,9 @@ export default {
         { path: '/api/generate', handler: '~/api/generate.js' },
         { path: '/api/get', handler: '~/api/get.js' }
     ],
-    build: {
-        publicPath: `${process.env.SITE_HOST}${process.env.SITE_ROOT}_nuxt/`
-    },
+    // build: {
+    //     publicPath: `${process.env.SITE_HOST}${process.env.SITE_ROOT}_nuxt/`
+    // },
     router: {
         base: process.env.SITE_ROOT
     }
