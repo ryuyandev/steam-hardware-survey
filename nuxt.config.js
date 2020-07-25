@@ -1,5 +1,8 @@
 require('dotenv').config()
 
+const { CronJob } = require('cron'),
+    axios = require('axios')
+
 export default {
     srcDir: 'src/',
     mode: 'universal',
@@ -17,5 +20,18 @@ export default {
     ],
     router: {
         base: process.env.SITE_ROOT
+    },
+    hooks: {
+        listen(server, listener) {
+            const dataGeneration = new CronJob({
+                cronTime: '00 00 00 * * *',
+                runOnInit: true,
+                start: true,
+                onTick() {
+                    console.log('Generating data')
+                    axios.get(listener.url + 'api/generate')
+                }
+            })
+        }
     }
 }
