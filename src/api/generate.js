@@ -11,6 +11,8 @@ export default async function (req, res) {
 
     const date = new Date('01 ' + $('#main_stats_header').text().split(' ').slice(0, 2).join(' '))
     const configDate = `${date.getFullYear()}/${date.getMonth() + 1}`
+
+    const dataPath = path.join(__dirname, '..', '..', 'data')
     const config = await readJson(dataPath + '/config.json')
 
     if (configDate !== config.latest) {
@@ -41,8 +43,6 @@ export default async function (req, res) {
 
         result.total = result.stats.map(gpu => gpu.percentage).reduce((a, b) => a + b).toFixed(2)
         result.stats.forEach((gpu, index) => gpu.rank = index + 1)
-
-        const dataPath = path.join(__dirname, '..', '..', 'data')
         
         config.latest = configDate
         await Promise.all([
