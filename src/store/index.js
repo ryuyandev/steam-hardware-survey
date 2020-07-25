@@ -20,7 +20,8 @@ export const actions = {
                 redirect(process.env.SITE_URL)
             else {
                 try {
-                    data = require(`../../data/${pieces[1]}/${pieces[2]}`)
+                    const dataRequest = await axios.get(`${process.env.SITE_URL}data/${pieces[1]}/${pieces[2]}.json?v=${new Date().getTime()}`)
+                    data = dataRequest.data
                 } catch (e) {
                     redirect(process.env.SITE_URL)
                 }
