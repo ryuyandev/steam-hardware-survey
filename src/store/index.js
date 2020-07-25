@@ -1,4 +1,4 @@
-import config from '../../data/config'
+import axios from 'axios'
 
 export const state = () => ({
     data: null,
@@ -6,23 +6,23 @@ export const state = () => ({
 })
 
 export const actions = {
-    nuxtServerInit({ commit }, { req, redirect }) {
+    async nuxtServerInit({ commit }, { req, redirect }) {
         let data = null
 
         if (req.url === '/' || req.url === '') {
-            try {
-                data = require(`../../data/${config.latest}`)
-            } catch (e) {}
+            const configRequest = await axios.get(`${process.env.SITE_URL}data/config.json?v=${new Date().getTime()}`)
+            const dataRequest = await axios.get(`${process.env.SITE_URL}data/${configRequest.data.latest}.json?v=${new Date().getTime()}`)
+            data = dataRequest.data
         } else {
             const pieces = req.url.split('/')
 
             if (pieces.length < 3)
-                redirect(process.env.SITE_ROOT)
+                redirect(process.env.SITE_URL)
             else {
                 try {
                     data = require(`../../data/${pieces[1]}/${pieces[2]}`)
                 } catch (e) {
-                    redirect(process.env.SITE_ROOT)
+                    redirect(process.env.SITE_URL)
                 }
             }
         }

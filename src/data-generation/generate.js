@@ -42,7 +42,7 @@ export default async function (req, res) {
         result.total = result.stats.map(gpu => gpu.percentage).reduce((a, b) => a + b).toFixed(2)
         result.stats.forEach((gpu, index) => gpu.rank = index + 1)
 
-        const dataPath = path.join(__dirname, '..', '..', 'data')
+        const dataPath = path.join(__dirname, '..', 'static', 'data')
         
         config.latest = configDate
         await Promise.all([
