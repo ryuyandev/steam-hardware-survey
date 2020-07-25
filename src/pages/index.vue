@@ -69,7 +69,7 @@ export default {
     computed: {
         ...mapState(['data', 'olderUrl']),
         appBackground() {
-            return `url('${process.env.SITE_URL}default-bg.png') center top no-repeat #1b2838;`
+            return `url('${process.env.SITE_ROOT}default-bg.png') center top no-repeat #1b2838;`
         },
         date() {
             const date = new Date(this.data.date)
