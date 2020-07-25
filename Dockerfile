@@ -1,5 +1,7 @@
 FROM node:12-alpine
 
+LABEL com.centurylinklabs.watchtower.enable="true"
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
