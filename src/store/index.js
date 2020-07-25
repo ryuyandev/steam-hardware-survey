@@ -6,8 +6,10 @@ export const state = () => ({
 })
 
 export const actions = {
-    nuxtServerInit({ commit }, { req, redirect }) {
+    nuxtServerInit({ commit }, { req, redirect, env }) {
         let data = null
+
+        console.log('url', req.url)
 
         if (req.url === '/' || req.url === '') {
             try {
@@ -17,12 +19,12 @@ export const actions = {
             const pieces = req.url.split('/')
 
             if (pieces.length < 3)
-                redirect('/')
+                redirect(env.SITE_ROOT)
             else {
                 try {
                     data = require(`../../data/${pieces[1]}/${pieces[2]}`)
                 } catch (e) {
-                    redirect('/')
+                    redirect(env.SITE_ROOT)
                 }
             }
         }

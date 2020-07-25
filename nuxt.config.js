@@ -8,6 +8,7 @@ export default {
         ]
     },
     modules: ['nuxt-buefy'],
+    buildModules: ['@nuxtjs/dotenv'],
     serverMiddleware: [
         { path: '/generate', handler: '~/data-generation/generate.js' }
     ]
