@@ -2,14 +2,14 @@
   "name": "steam-hardware-survey",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start"
   },
   "keywords": [],
-  "author": "",
+  "author": "ryuyan",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
