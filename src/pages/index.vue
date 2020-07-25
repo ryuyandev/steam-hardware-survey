@@ -40,7 +40,7 @@
                         <b-table-column field="rank" label="Rank" sortable numeric>
                             {{ props.row.rank }}
                         </b-table-column>
-                        <b-table-column field="percentage" label="Percentage" sortable numeric>
+                        <b-table-column field="percentage" label="Popularity" sortable numeric>
                             {{ props.row.percentage }}%
                         </b-table-column>
                     </template>

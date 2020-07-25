@@ -27,10 +27,10 @@ export const actions = {
     
                 const previousMonth = new Date(data.date)
                 previousMonth.setMonth(previousMonth.getMonth() - 1)
-                const datePath = `/${previousMonth.getFullYear()}/${previousMonth.getMonth() + 1}`
+                const datePath = `${previousMonth.getFullYear()}/${previousMonth.getMonth() + 1}`
                 try {
-                    const olderDataRequest = await axios.get(apiUrl + datePath)
-                    commit('setOlderUrl', datePath)
+                    const olderDataRequest = await axios.get(`${apiUrl}/${datePath}`)
+                    commit('setOlderUrl', process.env.SITE_ROOT + datePath)
                 } catch (e) {}
             }
         }
