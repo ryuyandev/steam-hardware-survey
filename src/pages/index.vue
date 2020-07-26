@@ -1,5 +1,5 @@
 <template>
-    <div id="app" v-if="data" :style="{ background: appBackground, opacity: parseInt(loaded) }">
+    <div id="app" v-if="data" style="opacity: 0" :style="{ background: appBackground, opacity: loaded ? 1 : 0 }">
         <header class="hero is-primary">
             <div class="hero-body">
                 <div class="container">
