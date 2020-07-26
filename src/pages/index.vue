@@ -4,7 +4,7 @@
             <div class="hero-body">
                 <div class="container">
                     <h1 class="title">
-                        Steam Graphics Card Popularity<span>GTX 1060 or weaker</span>
+                        Steam Graphics Card Popularity<span>GTX 1060 or lesser</span>
                     </h1>
                     <h2 class="subtitle">
                         {{ date }}
@@ -16,7 +16,7 @@
             <div class="card">
                 <header class="card-header">
                     <p class="card-header-title">
-                        Users with GTX 1060 or weaker
+                        Users with GTX 1060 or lesser
                     </p>
                 </header>
                 <div class="card-content">
@@ -84,7 +84,7 @@ export default {
             this.$buefy.dialog.alert({
                 title: 'About',
                 message: `At the time of the creation of this page, the most popular graphics card among steam users was the GTX 1060.
-As that card is aging, I was interested in knowing what percentage of steam users had that card or weaker, and I was interested in tracking that number over time.
+As that card is aging, I was interested in knowing what percentage of steam users had that card or anything less potent, and I was interested in tracking that number over time.
 This page will automatically update as new hardware survey data is available, with older data also available via the "Show Older Data" link,
 or by appending the requested year and month to the url like so:<br /><br /><a href="${this.siteRoot}2020/6">http://ryuyan.ninja${this.siteRoot}2020/6</a>`,
                 confirmText: 'kthx'
