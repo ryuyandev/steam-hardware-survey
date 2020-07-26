@@ -1,5 +1,5 @@
 <template>
-    <div id="app" v-if="data" :style="{ background: appBackground }">
+    <div id="app" v-if="data" :class="{ loaded }" :style="{ background: appBackground }">
         <header class="hero is-primary">
             <div class="hero-body">
                 <div class="container">
@@ -72,11 +72,16 @@ export default {
     computed: {
         ...mapState(['siteRoot', 'data', 'olderUrl']),
         appBackground() {
-            return `url('${this.siteRoot}default-bg.png') center top no-repeat #1b2838;`
+            return `url('${this.siteRoot}default-bg.png') center top no-repeat #1b2838`
         },
         date() {
             const date = new Date(this.data.date)
             return `${date.toLocaleDateString('default', { month: 'long' })} ${date.getFullYear()}`
+        }
+    },
+    data() {
+        return {
+            loaded: false
         }
     },
     methods: {
@@ -88,6 +93,18 @@ As that card is aging, I was interested in knowing what percentage of steam user
 This page will automatically update as new hardware survey data is available, with older data also available via the "Show Older Data" link,
 or by appending the requested year and month to the url like so:<br /><br /><a href="${this.siteRoot}2020/6">http://ryuyan.ninja${this.siteRoot}2020/6</a>`,
                 confirmText: 'kthx'
+            })
+        }
+    },
+    created() {
+        if (process.browser && document.readyState !== 'complete') {
+            window.addEventListener('load', () => {
+                this.loaded = true
+                this.$nuxt.$loading.finish()
+            })
+            this.$nextTick(() => {
+                if (!this.loaded)
+                    this.$nuxt.$loading.start()
             })
         }
     }
@@ -102,6 +119,12 @@ html {
         min-height: 100vh;
         display: flex;
         flex-direction: column;
+        opacity: 0;
+        transition: opacity .5s ease;
+
+        &.loaded {
+            opacity: 1;
+        }
 
         &.no-data {
             justify-content: center;
