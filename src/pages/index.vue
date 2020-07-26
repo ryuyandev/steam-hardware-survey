@@ -1,5 +1,5 @@
 <template>
-    <div id="app" v-if="data" :class="{ loaded }" :style="{ background: appBackground }">
+    <div id="app" v-if="data" :style="{ background: appBackground, opacity: parseInt(loaded) }">
         <header class="hero is-primary">
             <div class="hero-body">
                 <div class="container">
@@ -119,12 +119,7 @@ html {
         min-height: 100vh;
         display: flex;
         flex-direction: column;
-        opacity: 0;
         transition: opacity .5s ease;
-
-        &.loaded {
-            opacity: 1;
-        }
 
         &.no-data {
             justify-content: center;
