@@ -21,13 +21,13 @@ export default {
         color: '#356e92',
     },
     modules: ['nuxt-buefy'],
-    buildModules: ['@nuxtjs/dotenv', 'nuxt-purgecss'],
+    buildModules: ['@nuxtjs/dotenv'], //'nuxt-purgecss'],
     buefy: {
         css: false
     },
-    purgeCSS: {
-        mode: 'webpack'
-    },
+    // purgeCSS: {
+    //     mode: 'webpack'
+    // },
     css: ['@/assets/css/main.scss'],
     router: {
         base: process.env.SITE_ROOT
