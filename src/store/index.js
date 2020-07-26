@@ -1,12 +1,15 @@
 import axios from 'axios'
 
 export const state = () => ({
+    siteRoot: '',
     data: null,
     olderUrl: ''
 })
 
 export const actions = {
     async nuxtServerInit({ commit }, { req, redirect, error }) {
+        commit('setSiteRoot', process.env.SITE_ROOT)
+
         let data = null
 
         if (!req.url.startsWith('/api')) {
@@ -38,6 +41,9 @@ export const actions = {
 }
 
 export const mutations = {
+    setSiteRoot(state, siteRoot) {
+        state.siteRoot = siteRoot
+    },
     setData(state, data) {
         state.data = data
     },

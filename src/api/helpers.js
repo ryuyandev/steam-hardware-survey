@@ -1,4 +1,4 @@
-export function getRank(model, benchmarkData) {
+function getRank(model, benchmarkData) {
     const ranks = benchmarkData
         .filter(benchmark => benchmark.Model.match(new RegExp(`${model}(?!M)(?!X)(?! X)(?! Super)(?! Ti)(?!-Ti)(?!S )`)) != null)
         .map(benchmark => parseInt(benchmark.Rank))
@@ -9,7 +9,7 @@ export function getRank(model, benchmarkData) {
     return ranks.reduce((a, b) => a + b) / ranks.length
 }
 
-export function getBenchmarkModel(name) {
+function getBenchmarkModel(name) {
     if (name.includes('NVIDIA')) {
         return name
             .replace('NVIDIA GeForce ', '')
@@ -50,4 +50,26 @@ export function getBenchmarkModel(name) {
             .replace('Iris Graphics 6100', 'Iris Pro HD 6100')
             .replace('Valleyview Baytrail', 'Bay Trail')
             .replace('Cherryview Cherrytrail', 'HD 4000')
+}
+
+function getResult(gpus, date) {
+    const gtx1060rank = gpus.filter(gpu => gpu.name == 'NVIDIA GeForce GTX 1060')[0].benchmarkRank
+    
+    const result = {
+        date: date.toJSON().split('.')[0],
+        stats: gpus
+            .filter(gpu => gpu.benchmarkRank >= gtx1060rank)
+            .sort((a, b) => a.benchmarkRank > b.benchmarkRank ? 1 : -1)
+    }
+
+    result.total = result.stats.map(gpu => gpu.percentage).reduce((a, b) => a + b).toFixed(2)
+    result.stats.forEach((gpu, index) => gpu.rank = index + 1)
+
+    return result
+}
+
+module.exports = {
+    getBenchmarkModel,
+    getRank,
+    getResult
 }

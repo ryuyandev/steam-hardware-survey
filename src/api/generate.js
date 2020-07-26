@@ -1,7 +1,7 @@
 import axios from 'axios'
 import cheerio from 'cheerio'
 import neatCsv from 'neat-csv'
-import { getBenchmarkModel, getRank } from './helpers'
+import { getBenchmarkModel, getRank, getResult } from './helpers'
 import { readJson, outputJson } from 'fs-extra'
 import path from 'path'
 
@@ -31,23 +31,13 @@ export default async function (req, res) {
                     benchmarkRank: getRank(getBenchmarkModel(name), benchmarkData)
                 })
         })
-
-        const gtx1060rank = gpus.filter(gpu => gpu.name == 'NVIDIA GeForce GTX 1060')[0].benchmarkRank
     
-        const result = {
-            date: date.toJSON().split('.')[0],
-            stats: gpus
-                .filter(gpu => gpu.benchmarkRank >= gtx1060rank)
-                .sort((a, b) => a.benchmarkRank > b.benchmarkRank ? 1 : -1)
-        }
-
-        result.total = result.stats.map(gpu => gpu.percentage).reduce((a, b) => a + b).toFixed(2)
-        result.stats.forEach((gpu, index) => gpu.rank = index + 1)
+        const result = getResult(gpus, date)
         
         config.latest = configDate
         await Promise.all([
             outputJson(dataPath + '/config.json', config),
-            outputJson(dataPath + `/${configDate}.json`, result)])
+            outputJson(`${dataPath}/${configDate}.json`, result)])
     }
 
     res.end('OK')
