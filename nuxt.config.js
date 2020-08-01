@@ -11,7 +11,7 @@ export default {
         { path: '/api/get', handler: '~/api/get.js' }
     ],
     head: {
-        title: 'Steam Graphics Card Popularity (GTX 1060 or weaker)',
+        title: 'Steam Graphics Card Popularity [GTX 1060 or lesser]',
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' }
@@ -21,13 +21,70 @@ export default {
         color: '#356e92',
     },
     modules: ['nuxt-buefy'],
-    buildModules: ['@nuxtjs/dotenv'], //'nuxt-purgecss'],
+    buildModules: ['@nuxtjs/dotenv', 'nuxt-purgecss'],
     buefy: {
         css: false
     },
-    // purgeCSS: {
-    //     mode: 'webpack'
-    // },
+    purgeCSS: {
+        mode: 'webpack',
+        // Array.from(
+        //    new Set(
+        //        Array.from(
+        //            document.body.innerHTML.matchAll(/class="(([a-zA-Z\-]+)\s*([a-zA-Z\-]*)\s*([a-zA-Z\-]*))"/g))
+        //                .flatMap(result => [result[2], result[3], result[4]])
+        //                .filter(result => result)))
+        whitelistPatternsChildren: [
+            /hero/,
+            /is\-primary/,
+            /hero\-body/,
+            /container/,
+            /title/,
+            /subtitle/,
+            /section/,
+            /card/,
+            /card\-header/,
+            /card\-header\-title/,
+            /card\-content/,
+            /content/,
+            /has\-text\-centered/,
+            /stats/,
+            /b\-table/,
+            /field/,
+            /table\-mobile\-sort/,
+            /has\-addons/,
+            /control/,
+            /is\-expanded/,
+            /select/,
+            /is\-fullwidth/,
+            /button/,
+            /icon/,
+            /is\-small/,
+            /is\-desc/,
+            /mdi/,
+            /mdi\-chevron\-up/,
+            /table\-wrapper/,
+            /has\-mobile\-cards/,
+            /table/,
+            /is\-sortable/,
+            /th\-wrap/,
+            /is\-numeric/,
+            /is\-current\-sort/,
+            /has\-text\-right/,
+            /footer/,
+            /dialog/,
+            /modal/,
+            /is\-active/,
+            /modal\-background/,
+            /modal\-card/,
+            /animation\-content/,
+            /modal\-card\-head/,
+            /modal\-card\-title/,
+            /modal\-card\-body/,
+            /media/,
+            /media\-content/,
+            /modal\-card\-foot/
+        ]
+    },
     css: ['@/assets/css/main.scss'],
     router: {
         base: process.env.SITE_ROOT
