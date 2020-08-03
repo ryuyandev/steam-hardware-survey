@@ -71,5 +71,11 @@ function getResult(gpus, date) {
 module.exports = {
     getBenchmarkModel,
     getRank,
-    getResult
+    getResult,
+    filteredNames: [
+        'Other',
+        'NVIDIA Graphics Device',
+        'Intel HD Graphics',
+        'AMD Radeon RX Vega'
+    ]
 }

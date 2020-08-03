@@ -1,7 +1,7 @@
 import axios from 'axios'
 import cheerio from 'cheerio'
 import neatCsv from 'neat-csv'
-import { getBenchmarkModel, getRank, getResult } from './helpers'
+import { getBenchmarkModel, getRank, getResult, filteredNames } from './helpers'
 import { readJson, outputJson } from 'fs-extra'
 import path from 'path'
 
@@ -24,7 +24,7 @@ export default async function (req, res) {
             const self = $(element)
             const name = self.text().trim()
 
-            if (name && name != 'Other' && name != 'NVIDIA Graphics Device' && name != 'Intel HD Graphics')
+            if (name && !filteredNames.includes(name))
                 gpus.push({
                     name,
                     percentage: parseFloat(self.next().text()),

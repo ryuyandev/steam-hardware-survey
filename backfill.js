@@ -1,7 +1,7 @@
 const axios = require('axios'),
     cheerio = require('cheerio'),
     neatCsv = require('neat-csv'),
-    { getBenchmarkModel, getRank, getResult } = require('./src/api/helpers'),
+    { getBenchmarkModel, getRank, getResult, filteredNames } = require('./src/api/helpers'),
     { outputJson } = require('fs-extra'),
     path = require('path')
 
@@ -24,7 +24,7 @@ async function backfillData(requestedIndex) {
         const name = row.find('.substats_col_left').text().trim()
         const percentage = row.find('.substats_col_month').eq(requestedIndex).text().trim()
 
-        if (name && percentage && percentage != '-', name != 'Other' && name != 'NVIDIA Graphics Device' && name != 'Intel HD Graphics')
+        if (percentage && percentage != '-' && name && !filteredNames.includes(name))
             gpus.push({
                 name,
                 percentage: parseFloat(percentage),
