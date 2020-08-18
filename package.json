@@ -1,6 +1,6 @@
 {
   "name": "steam-hardware-survey",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "",
   "main": "",
   "scripts": {
@@ -22,7 +22,7 @@
     "nuxt-buefy": "^0.3.31"
   },
   "devDependencies": {
-    "@nuxtjs/dotenv": "^1.4.1",
+    "@nuxtjs/google-analytics": "^2.4.0",
     "node-sass": "^4.14.1",
     "nuxt-purgecss": "^1.0.0",
     "sass-loader": "^9.0.2"

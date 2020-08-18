@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const { CronJob } = require('cron'),
     axios = require('axios')
 
@@ -11,9 +9,14 @@ export default {
         { path: '/api/get', handler: '~/api/get.js' }
     ],
     head: {
+        htmlAttrs: {
+            lang: 'en'
+        },
         title: 'Steam Graphics Card Popularity [GTX 1060 or lesser]',
         meta: [
-            { charset: 'utf-8' },
+            { charset: 'UTF-8' },
+            { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' },
+            { hid: 'description', name: 'description', content: 'Statistics showing the popularity of the GTX 1060 or lesser GPUs among Steam users' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' }
         ]
     },
@@ -21,9 +24,12 @@ export default {
         color: '#356e92',
     },
     modules: ['nuxt-buefy'],
-    buildModules: ['@nuxtjs/dotenv', 'nuxt-purgecss'],
+    buildModules: ['@nuxtjs/google-analytics', 'nuxt-purgecss'],
     buefy: {
         css: false
+    },
+    googleAnalytics: {
+        id: 'UA-174260919-1'
     },
     purgeCSS: {
         mode: 'webpack',
@@ -40,6 +46,8 @@ export default {
             /container/,
             /title/,
             /subtitle/,
+            /hero\-foot/,
+            /tabs/,
             /section/,
             /card/,
             /card\-header/,
@@ -66,6 +74,7 @@ export default {
             /has\-mobile\-cards/,
             /table/,
             /is\-sortable/,
+            /is\-striped/,
             /th\-wrap/,
             /is\-numeric/,
             /is\-current\-sort/,
@@ -88,6 +97,9 @@ export default {
     css: ['@/assets/css/main.scss'],
     router: {
         base: process.env.SITE_ROOT
+    },
+    publicRuntimeConfig: {
+        siteRoot: process.env.SITE_ROOT
     },
     build: {
         extractCSS: true

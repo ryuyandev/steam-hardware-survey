@@ -1,5 +1,8 @@
 <template>
-    <div id="app" v-if="data" style="background: #1b2838; opacity: 0" :style="{ background: appBackground, opacity: loaded ? 1 : 0 }">
+    <div id="app" class="no-data" v-if="!data" :style="{ background: appBackground }">
+        No Available Data
+    </div>
+    <div id="app" v-else style="background: #1b2838; opacity: 0" :style="{ background: appBackground, opacity: loaded ? 1 : 0 }">
         <header class="hero is-primary">
             <div class="hero-body">
                 <div class="container">
@@ -10,6 +13,23 @@
                         {{ date }}
                     </h2>
                 </div>
+            </div>
+            <div class="hero-foot">
+                <nav class="tabs">
+                    <div class="container">
+                        <ul>
+                            <li v-if="data.prev">
+                                <a :href="data.prev">Previous Month</a>
+                            </li>
+                            <li>
+                                <a href="#" @click.prevent="aboutDialog">About</a>
+                            </li>
+                            <li v-if="data.next">
+                                <a :href="data.next">Next Month</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
             </div>
         </header>
         <main class="section">
@@ -32,7 +52,9 @@
                     default-sort-direction="desc"
                     sort-icon="chevron-up"
                     sort-icon-size="is-small"
-                    default-sort="percentage">
+                    default-sort="percentage"
+                    :striped="true"
+                >
                     <template slot-scope="props">
                         <b-table-column field="name" label="Name" sortable>
                             {{ props.row.name }}
@@ -47,21 +69,23 @@
                 </b-table>
             </section>
         </main>
+        <section class="section">
+        </section>
         <footer class="footer">
             <div class="content has-text-centered">
                 <p>
                     GPU popularity from <a href="https://store.steampowered.com/hwsurvey/" target="_blank">Steam Hardware Survey</a><br />
                     GPU ranking from <a href="https://www.userbenchmark.com/page/developer" target="_blank">UserBenchmark data files</a><br /><br />
+                    <span v-if="data.prev">
+                        <a :href="data.prev">Previous Month</a> |
+                    </span>
                     <a href="#" @click.prevent="aboutDialog">About</a>
-                    <span v-if="olderUrl">
-                        | <a :href="olderUrl">Show Older Data</a>
+                    <span v-if="data.next">
+                        | <a :href="data.next">Next Month</a>
                     </span>
                 </p>
             </div>
         </footer>
-    </div>
-    <div id="app" class="no-data" v-else :style="{ background: appBackground }">
-        No Available Data
     </div>
 </template>
 
@@ -70,9 +94,9 @@ import { mapState } from 'vuex'
 
 export default {
     computed: {
-        ...mapState(['siteRoot', 'data', 'olderUrl']),
+        ...mapState(['data']),
         appBackground() {
-            return `url('${this.siteRoot}default-bg.png') center top no-repeat #1b2838`
+            return `url('${this.$config.siteRoot}default-bg.png') center top no-repeat #1b2838`
         },
         date() {
             const date = new Date(this.data.date)
@@ -90,8 +114,7 @@ export default {
                 title: 'About',
                 message: `At the time of the creation of this page, the most popular graphics card among steam users was the GTX 1060.
 As that card is aging, I was interested in knowing what percentage of steam users had that card or anything less potent, and I was interested in tracking that number over time.
-This page will automatically update as new hardware survey data is available, with older data also available via the "Show Older Data" link,
-or by appending the requested year and month to the url like so:<br /><br /><a href="${this.siteRoot}2020/6">http://ryuyan.ninja${this.siteRoot}2020/6</a>`,
+This page will automatically update as new hardware survey data is available.`,
                 confirmText: 'kthx'
             })
         }
@@ -115,6 +138,14 @@ or by appending the requested year and month to the url like so:<br /><br /><a h
 html {
     background-color: #171a21;
 
+    a {
+        color: #C6D4DF;
+
+        &:hover {
+            color: #FFF;
+        }
+    }
+
     #app {
         min-height: 100vh;
         display: flex;
@@ -126,14 +157,6 @@ html {
             text-align: center;
             color: #FFF;
             font-size: 64px;
-        }
-
-        a {
-            color: #C6D4DF;
-
-            &:hover {
-                color: #FFF;
-            }
         }
 
         header.hero {
@@ -168,6 +191,10 @@ html {
             .subtitle {
                 color: #b8b6b4;
             }
+
+            nav.tabs ul {
+                justify-content: center;
+            }
         }
 
         main.section {
@@ -184,42 +211,145 @@ html {
 
             .card {
                 min-width: 327px;
+                background: transparent;
 
-                .card-header-title {
-                    justify-content: center;
+                .card-header {
+                    box-shadow: 0 1px 2px #17435f;
+                    background: rgba( 0, 0, 0, 0.4 );
+                    position: relative;
+
+                    .card-header-title {
+                        color: #c6d4df;
+                        justify-content: center;
+                    }
                 }
+                
+                .card-content {
+                    background: rgba( 0, 0, 0, 0.5 );
 
-                .card-content .content {
-                    font-size: 4rem;
+                    .content {
+                        font-size: 4rem;
+                        color: #7092a5;
+                    }
                 }
             }
 
             section.stats {
                 width: 100%;
+                max-width: 800px;
+                padding-bottom: 0;
 
-                .select:not(.is-multiple):not(.is-loading)::after {
-                    border-color: #171a21;
-                }
-
-                .table {
-                    border-radius: 0;
-                    background-color: transparent;                
-
-                    th {
-                        user-select: none;
+                .select {
+                    select {
+                        background: rgba( 0, 0, 0, 0.4 );
+                        border-color: rgba( 0, 0, 0, 0.5 );
+                        color: #c6d4df;
                     }
 
-                    tr {
-                        background-color: white;
+                    &::after {
+                        border-color: rgba(62, 126, 167, 0.8) !important;
+                    }
+                }
+
+                .table-wrapper {
+                    overflow: visible;
+
+                    .table {
+                        border-radius: 0;
+                        background-color: transparent;
+
+                        thead tr {
+                            background: rgba( 0, 0, 0, 0.4 );
+
+                            th {
+                                color: #c6d4df;
+                                border-color: #2e5b76;
+                                user-select: none;
+
+                                &.is-current-sort,
+                                &:hover {
+                                    border-color: #497b98;
+                                }
+                            }
+                        }
+
+                        tbody tr {
+                            background: rgba( 42, 72, 94, 0.2 );
+                            border: 1px solid rgba( 0, 0, 0, 0.4 );
+                            box-shadow: 1px 1px 7px rgba( 0, 0, 0, 0.3 );
+
+                            td {
+                                border: 0;
+                                color: #9099a1;
+                                
+                                &:first-child {
+                                    background: rgba( 0, 0, 0, 0.2 );
+                                }
+                            }
+                        }
+
+                        @media screen and (min-width: 769px) {
+                            box-shadow: 1px 1px 7px rgba( 0, 0, 0, 0.3 );
+                            border: 1px solid rgba( 0, 0, 0, 0.4 );
+
+                            tbody {
+                                background: rgba( 0, 0, 0, 0.2 );
+
+                                tr {
+                                    border: 0;
+                                    box-shadow: none;
+
+                                    &:not(.is-selected):nth-child(even) {
+                                        background: rgba( 42, 72, 94, 0.4 );
+                                    }
+
+                                    td {
+                                        background: transparent !important;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
+        }
+
+        main + section {
+            padding: 0 0 3rem;
+            text-align: center;
         }
 
         footer.footer {
             padding: 3rem 1.5rem;
             background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.5) 100%);
             color: #8F98A0;
+
+            a[href^="h"] {
+                display: block;
+
+                @media screen and (min-width: 769px) {
+                    display: inline;
+                }
+            }
+        }
+    }
+
+    .modal-card {
+        border-radius: 6px;
+
+        .modal-card-head,
+        .modal-card-foot {
+            border: 0;
+            background: #171a21;
+
+            p {
+                color: #c6d4df;
+            }
+        }
+
+        .modal-card-body {
+            background: #1c2839;
+            color: #9099a1;
         }
     }
 }
