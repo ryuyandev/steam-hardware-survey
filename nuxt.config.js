@@ -20,9 +20,6 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]
   },
-  loading: {
-    color: '#356e92',
-  },
   modules: ['nuxt-buefy'],
   buildModules: ['@nuxtjs/google-analytics', 'nuxt-purgecss'],
   buefy: {

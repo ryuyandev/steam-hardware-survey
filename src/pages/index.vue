@@ -1,120 +1,126 @@
 <template>
-  <div
-    id="app"
-    v-if="!data"
-    class="no-data"
-    :style="{ background: appBackground }"
-  >
-    No Available Data
-  </div>
-  <div
-    id="app"
-    v-else
-    style="background: #1b2838; opacity: 0"
-    :style="{ background: appBackground, opacity: loaded ? 1 : 0 }"
-  >
-    <header class="hero is-primary">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">
-            Steam Graphics Card Popularity
-            <span>GTX 1060 or lesser</span>
-          </h1>
-          <h2 class="subtitle">{{ date }}</h2>
-        </div>
+    <div
+      style="background: #1b2838; opacity: 0; transition: opacity 0.5s ease"
+      :style="{ background: appBackground, opacity: fullyLoaded ? 1 : 0 }"
+    >
+      <div
+        id="app"
+        v-if="!data"
+        class="no-data"
+        :style="{ background: appBackground }"
+      >
+        No Available Data
       </div>
-      <div class="hero-foot">
-        <nav class="tabs">
-          <div class="container">
-            <ul>
-              <li v-if="data.prev">
-                <a :href="data.prev">Previous Month</a>
-              </li>
-              <li>
-                <a href="#" @click.prevent="aboutDialog">About</a>
-              </li>
-              <li v-if="data.next">
-                <a :href="data.next">Next Month</a>
-              </li>
-            </ul>
+      <div
+        id="app"
+        v-else
+      >
+        <header class="hero is-primary">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title">
+                Steam Graphics Card Popularity
+                <span>GTX 1060 or lesser</span>
+              </h1>
+              <h2 class="subtitle">{{ date }}</h2>
+            </div>
           </div>
-        </nav>
-      </div>
-    </header>
-    <main class="section">
-      <div class="card">
-        <header class="card-header">
-          <p class="card-header-title">Users with GTX 1060 or lesser</p>
+          <div class="hero-foot">
+            <nav class="tabs">
+              <div class="container">
+                <ul>
+                  <li v-if="data.prev">
+                    <nuxt-link :to="data.prev">Previous Month</nuxt-link>
+                  </li>
+                  <li>
+                    <a href="#" @click.prevent="aboutDialog">About</a>
+                  </li>
+                  <li v-if="data.next">
+                    <nuxt-link :to="data.next">Next Month</nuxt-link>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
         </header>
-        <div class="card-content">
-          <div class="content has-text-centered">
-            {{ data.total }}%
+        <main class="section">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">Users with GTX 1060 or lesser</p>
+            </header>
+            <div class="card-content">
+              <div class="content has-text-centered">
+                {{ data.total }}%
+              </div>
+            </div>
           </div>
-        </div>
+          <section class="stats section">
+            <h2>Statistics</h2>
+            <b-table
+              :data="data.stats"
+              default-sort-direction="desc"
+              sort-icon="chevron-up"
+              sort-icon-size="is-small"
+              default-sort="percentage"
+              :striped="true"
+            >
+              <template slot-scope="props">
+                <b-table-column field="name" label="Name" sortable>
+                  {{ props.row.name }}
+                </b-table-column>
+                <b-table-column field="rank" label="Rank" sortable numeric>
+                  {{ props.row.rank }}
+                </b-table-column>
+                <b-table-column field="percentage" label="Popularity" sortable numeric>
+                  {{ props.row.percentage.toFixed(2) }}%
+                </b-table-column>
+              </template>
+            </b-table>
+          </section>
+        </main>
+        <section class="section"></section>
+        <footer class="footer">
+          <div class="content has-text-centered">
+            <p>
+              GPU popularity from
+              <a href="https://store.steampowered.com/hwsurvey/" target="_blank">Steam Hardware Survey</a><br />
+              GPU ranking from
+              <a href="https://www.userbenchmark.com/page/developer" target="_blank">UserBenchmark data files</a><br />
+              <br />
+              <span v-if="data.prev">
+                <nuxt-link :to="data.prev">Previous Month</nuxt-link> |
+              </span>
+              <a href="#" @click.prevent="aboutDialog">About</a>
+              <span v-if="data.next">
+                | <nuxt-link :to="data.next">Next Month</nuxt-link>
+              </span>
+            </p>
+          </div>
+        </footer>
       </div>
-      <section class="stats section">
-        <h2>Statistics</h2>
-        <b-table
-          :data="data.stats"
-          default-sort-direction="desc"
-          sort-icon="chevron-up"
-          sort-icon-size="is-small"
-          default-sort="percentage"
-          :striped="true"
-        >
-          <template slot-scope="props">
-            <b-table-column field="name" label="Name" sortable>
-              {{ props.row.name }}
-            </b-table-column>
-            <b-table-column field="rank" label="Rank" sortable numeric>
-              {{ props.row.rank }}
-            </b-table-column>
-            <b-table-column field="percentage" label="Popularity" sortable numeric>
-              {{ props.row.percentage.toFixed(2) }}%
-            </b-table-column>
-          </template>
-        </b-table>
-      </section>
-    </main>
-    <section class="section"></section>
-    <footer class="footer">
-      <div class="content has-text-centered">
-        <p>
-          GPU popularity from
-          <a href="https://store.steampowered.com/hwsurvey/" target="_blank">Steam Hardware Survey</a><br />
-          GPU ranking from
-          <a href="https://www.userbenchmark.com/page/developer" target="_blank">UserBenchmark data files</a><br />
-          <br />
-          <span v-if="data.prev">
-            <a :href="data.prev">Previous Month</a> |
-          </span>
-          <a href="#" @click.prevent="aboutDialog">About</a>
-          <span v-if="data.next">
-            | <a :href="data.next">Next Month</a>
-          </span>
-        </p>
-      </div>
-    </footer>
-  </div>
+    </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import axios from 'axios'
 
 export default {
   computed: {
-    ...mapState(['data']),
     appBackground() {
       return `url('${this.$config.siteRoot}default-bg.png') center top no-repeat #1b2838`
     },
     date() {
       const date = new Date(this.data.date)
       return `${date.toLocaleDateString('default', { month: 'long' })} ${date.getFullYear()}`
+    },
+    fullyLoaded() {
+      return this.loaded && !this.$fetchState.pending
     }
   },
   data() {
     return {
-      loaded: false
+      loaded: process.browser,
+      data: null
     }
   },
   methods: {
@@ -132,12 +138,23 @@ This page will automatically update as new hardware survey data is available.`,
     if (process.browser && document.readyState !== 'complete') {
       window.addEventListener('load', () => {
         this.loaded = true
-        this.$nuxt.$loading.finish()
       })
-      this.$nextTick(() => {
-        if (!this.loaded)
-          this.$nuxt.$loading.start()
-      })
+    }
+  },
+  async fetch() {
+    const { $config, redirect, error, req } = this.$nuxt.context
+    const protocol = process.server ? 'http:' : window.location.protocol
+    const host = process.server ? req.headers.host : window.location.host
+    const url = process.server ? req.url : window.location.pathname
+
+    try {
+      const dataRequest = await axios.get(`${protocol}//${host}${$config.siteRoot}api/get${url}`)
+      this.data = dataRequest.data
+    } catch (e) {
+      if (url !== '/')
+        redirect($config.siteRoot)
+      else
+        error({ statusCode: 500 })
     }
   }
 }
@@ -159,7 +176,6 @@ html {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    transition: opacity 0.5s ease;
 
     &.no-data {
       justify-content: center;
