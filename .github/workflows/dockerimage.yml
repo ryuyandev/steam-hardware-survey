@@ -12,6 +12,6 @@ jobs:
     - name: Login to DockerHub
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: Build Docker Image
-      run: docker build --build-arg SITE_ROOT_ARG=${{ secrets.SITE_ROOT }} --tag ryuyanninja/steam-hardware-survey:latest .
+      run: docker build --build-arg SITE_ROOT_ARG=${{ secrets.SITE_ROOT }} --tag ryuyandev/steam-hardware-survey:latest .
     - name: Push Docker Image
-      run: docker push ryuyanninja/steam-hardware-survey:latest
+      run: docker push ryuyandev/steam-hardware-survey:latest
