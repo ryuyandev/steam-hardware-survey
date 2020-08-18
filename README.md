@@ -10,9 +10,10 @@ It is hosted on a virtual Linux server running in the cloud using docker with a 
 
 1. (OPTIONAL) Create a .env file at the root of this project that contains the following values
     - `SITE_ROOT=/some-directory/` the subdirectory the site should run under (defaults to /)
-2. Run `npm run dev` to develop locally
-3. Run `npm run build` to build production dist
-4. Run `npm start` to run in production mode
+2. Run `npm install` to install necessary packages
+3. Run `npm run dev` to develop locally
+4. Run `npm run build` to build production dist
+5. Run `npm start` to run in production mode
 
 # Docker Container
 
