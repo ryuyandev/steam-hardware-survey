@@ -145,14 +145,14 @@ This page will automatically update as new hardware survey data is available.`,
     const { $config, redirect, error, req } = this.$nuxt.context
     const protocol = process.server ? 'http:' : window.location.protocol
     const host = process.server ? req.headers.host : window.location.host
-    const url = process.server ? req.url : window.location.pathname
+    const url = (process.server ? req.url : window.location.pathname).replace($config.siteRoot, '/')
 
     try {
       const dataRequest = await axios.get(`${protocol}//${host}${$config.siteRoot}api/get${url}`)
       this.data = dataRequest.data
     } catch (e) {
       if (url !== '/')
-        redirect($config.siteRoot)
+        redirect('/')
       else
         error({ statusCode: 500 })
     }
