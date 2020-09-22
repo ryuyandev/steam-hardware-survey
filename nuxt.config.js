@@ -104,7 +104,7 @@ export default {
   hooks: {
     listen(server, listener) {
       const dataGeneration = new CronJob({
-        cronTime: '00 00 00 1-2 * *',
+        cronTime: '00 00 00 * * *',
         runOnInit: true,
         start: true,
         onTick() {
